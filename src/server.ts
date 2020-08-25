@@ -4,11 +4,20 @@ import bodyParser from 'koa-bodyparser'
 import cors from 'koa2-cors'
 // 在 console 輸出日誌
 import logger from 'koa-logger'
+import Router from 'koa-router'
 
 const app = new Koa()
+const router = new Router()
 
-app.use(async (ctx) => {
-    ctx.body = 'hello koa2'
+router.get('/', async (ctx) => {
+    try {
+        let html = `
+            <h1>Hello</h1>
+        `
+        ctx.body = html
+    } catch (e) {
+        console.error(e)
+    }
 })
 
 app.use(bodyParser())
@@ -18,6 +27,7 @@ app.use(
     })
 )
 app.use(logger())
+app.use(router.routes())
 
 const server = app
     .listen(3000, async () => {
